@@ -1,10 +1,12 @@
 <script lang="ts">
+	import Logo from "../components/common/Logo.svelte";
+    import LightHr from "../components/LightHr.svelte";
 </script>
 
-<svelte:head>
-	<title>Home</title>
-	<meta name="description" content="Svelte demo app" />
-</svelte:head>
+<div class="text-center">
+    <Logo />    
+</div>
+<LightHr />
 
-<section>
-</section>
+<style>
+</style>
