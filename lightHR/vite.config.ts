@@ -3,7 +3,11 @@ import type { UserConfig } from 'vite';
 
 const config: UserConfig = {
 	plugins: [sveltekit()],
-	legacy: { buildSsrCjsExternalHeuristics: true }
+	legacy: { buildSsrCjsExternalHeuristics: true },
+	server: { 
+		fs: {allow: ["../"]}
+	}
+
 };
 
 export default config;

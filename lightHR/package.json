@@ -32,6 +32,7 @@
 	"type": "module",
 	"dependencies": {
 		"@fontsource/fira-mono": "^4.5.0",
-		"bootstrap": "^3.4.1"
+		"bootstrap": "^3.4.1",
+		"svelte-toast": "^1.0.0"
 	}
 }
