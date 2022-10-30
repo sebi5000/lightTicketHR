@@ -15,9 +15,9 @@ export class LightHRService implements ILightHRService{
 
     async getSuggestionsAsync(phrase: string): Promise<IAnswer[]> {      
         
-        let data = [{topic: "Gleitzeit", description: "Eine Beschreibung", ranking: 1},
-        {topic: "Test-2", description: "Eine Beschreibung-2", ranking: 3},
-        {topic: "Test-3", description: "Eine Beschreibung-3", ranking: 2}];
+        let data = [{topic: "Beispiel-1", description: "Eine Beschreibung", ranking: 1},
+        {topic: "Beispiel-2", description: "Eine Beschreibung-2", ranking: 3},
+        {topic: "Beispiel-3", description: "Eine Beschreibung-3", ranking: 2}];
 
         let extHook = this.config?.hooks?.find( conf => conf.name === "hookAfterSuggestions");
         try{
@@ -36,8 +36,6 @@ export class LightHRService implements ILightHRService{
             data = [];
         }
 
-        await new Promise(f=>setTimeout(f,1500));
-
         data.sort((x,y) => x.ranking - y.ranking);
         return data;
     }
@@ -47,8 +45,6 @@ export class LightHRService implements ILightHRService{
         let data = [];
 
         let extHook = this.config?.hooks?.find( conf => conf.name === "hookGetTicketCategories");
-
-        await new Promise(f=>setTimeout(f,5000));
 
         try{            
             if(extHook?.extEndpoint){
