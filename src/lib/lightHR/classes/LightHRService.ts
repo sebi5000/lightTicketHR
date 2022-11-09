@@ -15,6 +15,8 @@ export class LightHRService implements ILightHRService{
 
     async getSuggestionsAsync(phrase: string): Promise<IAnswer[]> {      
         
+        await new Promise( resolve => setTimeout(resolve, 2000) );
+
         let data = [{topic: "Beispiel-1", description: "Eine Beschreibung", ranking: 1},
         {topic: "Beispiel-2", description: "Eine Beschreibung-2", ranking: 3},
         {topic: "Beispiel-3", description: "Eine Beschreibung-3", ranking: 2}];

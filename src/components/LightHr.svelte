@@ -11,16 +11,19 @@
     export let phrase = "";
     export let placeholder = "";
     export let modus: Modus = Modus.Search;
-
+    let changedPhrase = "";
     let ticketStatus: IStatus;
 
-    //$: modus;
-    //If there is a valid status from ticket creation, we can start Seach Modus again
-    $: modus = ((ticketStatus?.type === StatusType.success) ? Modus.Search : modus);
-
-    function onChangePhrase(eventArgs: any){
-        phrase = eventArgs.target.value;
+    $: changedPhrase;
+    function onPhraseSubmit(){
+        if(changedPhrase != phrase){
+            changedPhrase = phrase;
+        }
     }
+
+    //$: modus;
+    //If there is a valid status from ticket creation, we can start Search Modus again
+    $: modus = ((ticketStatus?.type === StatusType.success) ? Modus.Search : modus);
 
     function onCreateTicket(eventArgs: any){
         modus = Modus.CreateTicket;        
@@ -38,15 +41,16 @@
 <div class="container">
     <div class="row">
         <div class="input-group input-group-lg m-5">     
-            <input type="text" class="form-control" value={phrase} placeholder={placeholder} on:input={onChangePhrase} disabled={modus === Modus.CreateTicket} />
+            <input type="text" class="form-control" bind:value={phrase} on:change={onPhraseSubmit} placeholder={placeholder} disabled={modus === Modus.CreateTicket} />
             <span class="input-group-btn">
+                <button class="btn btn-default" type="button" on:click={onPhraseSubmit} disabled={modus === Modus.CreateTicket}>Search</button>
                 <button class="btn btn-default" type="button" on:click={onCreateTicket} disabled={modus === Modus.CreateTicket}>Ask HR</button>
             </span>
         </div>
     </div>
     <div class="row">
         {#if modus === Modus.Search}
-            <ShowQuickSuggestions config={config} phrase={phrase} />
+            <ShowQuickSuggestions config={config} phrase={changedPhrase} />
         {:else}
             <CreateTicket bind:status={ticketStatus} config={config} phrase={phrase} on:click={onTicketFormClicked}/>
         {/if}
