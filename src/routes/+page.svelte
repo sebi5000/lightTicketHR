@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Logo from "../components/common/Logo.svelte";
+	import Logo from "../components/common/Logo.svelte"
     import LightHr from "../components/LightHr.svelte";
 </script>
 
@@ -7,9 +7,6 @@
     <Logo />    
 </div>
 <LightHr />
-
-<br>
-<h3>--PREVIEW--NO REAL DATA--</h3>
 
 <style>
 </style>

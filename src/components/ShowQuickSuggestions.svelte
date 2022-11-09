@@ -25,10 +25,18 @@
     {:then answers}
         {#if answers.length > 0}
             {#each answers as answer}
-                <QuickSuggestion answer={answer} />
+                <div class="quick-suggestions">
+                    <QuickSuggestion answer={answer} />
+                </div>
             {/each}
         {:else}
             <h4>Nothing Found - please create a ticket.</h4>
         {/if}
     {/await}
 {/if}
+
+<style>
+    .quick-suggestions{
+        margin-top: 0.5;
+    }
+</style>
