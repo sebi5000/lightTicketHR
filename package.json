@@ -33,6 +33,7 @@
 	"dependencies": {
 		"@fontsource/fira-mono": "^4.5.0",
 		"bootstrap": "^3.4.1",
+		"svelte-adapter-azure-swa": "^0.11.0",
 		"svelte-toast": "^1.0.0"
 	}
 }
