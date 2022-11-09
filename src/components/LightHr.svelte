@@ -40,7 +40,7 @@
         <div class="input-group input-group-lg m-5">     
             <input type="text" class="form-control" value={phrase} placeholder={placeholder} on:input={onChangePhrase} disabled={modus === Modus.CreateTicket} />
             <span class="input-group-btn">
-                <button class="btn btn-default" type="button" on:click={onCreateTicket} disabled={modus === Modus.CreateTicket}>Create Ticket</button>
+                <button class="btn btn-default" type="button" on:click={onCreateTicket} disabled={modus === Modus.CreateTicket}>Ask HR</button>
             </span>
         </div>
     </div>
