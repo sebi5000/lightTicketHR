@@ -32,9 +32,3 @@
         {/if}
     {/await}
 {/if}
-
-<style>
-    QuickSuggestion{
-        margin: 0.5em;
-    }
-</style>
