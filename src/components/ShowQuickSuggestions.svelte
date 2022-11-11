@@ -3,6 +3,7 @@
 	import QuickSuggestion from './QuickSuggestion.svelte';
     import type {IAnswer} from '../lib/lightHR/interfaces/IAnswer';
 	import type { IConfiguration } from '$lib/lightHR/interfaces/IConfiguration';
+	import { HTTPStatusCode } from '$lib/common/enumerations';
 
     export let config: IConfiguration;
     export let phrase = "";    
@@ -10,16 +11,19 @@
 
     async function getSuggestionsAsync(phrase: string){
 
-        let suggestions: Array<IAnswer> = [];
         const factory = LightHRServiceFactory.build(config);
-        suggestions = await factory.getSuggestionsAsync(phrase);
+        let answerResponse = await factory.getSuggestionsAsync(phrase);
 
-        return suggestions;
+        if (answerResponse?.status?.status_code !== HTTPStatusCode.ok){
+            throw new Error(answerResponse.status.detail);
+        }
+
+        return answerResponse?.answers;
     }
 
 </script>
 
-{#if phrase.length > 10}
+{#if phrase.length >= config.questionOptions?.minLength}
     {#await getSuggestionsAsync(phrase)}
         <p>Loading...</p>
     {:then answers}
@@ -32,7 +36,11 @@
         {:else}
             <h4>Nothing Found - please create a ticket.</h4>
         {/if}
+    {:catch error}
+        <p>{error.message}</p>
     {/await}
+{:else}
+    <p>Please enter meaningfull question, with a minimum of {config.questionOptions?.minLength} characters. So we can find a suitable solution.</p>
 {/if}
 
 <style>

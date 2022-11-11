@@ -1,5 +1,6 @@
 export interface IConfiguration{
     hooks: Array<IHook>,
+    questionOptions: IQuestionOptions,
     ticketCategories: Array<ITicketCategory> | null,
     createTicketOptions: ITicketOptions
 }
@@ -8,6 +9,10 @@ export interface IHook{
     name: string,
     extEndpoint: string,
     disableOrigCall: boolean
+}
+
+interface IQuestionOptions{
+    minLength: number
 }
 
 interface ITicketCategory{

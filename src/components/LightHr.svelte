@@ -16,7 +16,7 @@
 
     $: changedPhrase;
     function onPhraseSubmit(){
-        if(changedPhrase != phrase){
+        if(changedPhrase !== phrase){
             changedPhrase = phrase;
         }
     }

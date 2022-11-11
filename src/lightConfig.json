@@ -3,9 +3,12 @@
         { "name": "hookAfterSuggestions", "extEndpoint": "", "disableOrigCall": false },
         { "name": "hookGetTicketCategories", "extEndpoint": "", "disableOrigCall": false }
     ],
+    "questionOptions":{
+        "minLength": 3
+    },
     "ticketCategories":[
         { "key": "0", "name": "Select a value...", "initialSelected": true },
-        { "key": "1", "name": "Time", "initialSelected": false },
+        { "key": "1", "name": "Working Time", "initialSelected": false },
         { "key": "2", "name": "Travel", "initialSelected": false },
         { "key": "3", "name": "Pay", "initialSelected": false },
         { "key": "4", "name": "Covid-19", "initialSelected": false }
@@ -13,8 +16,8 @@
     "createTicketOptions":{
         "minSubjectLength": 15,
         "maxSubjectLength": 150,
-        "maxDescriptionLength": 750,
         "minDescriptionLength": 100,
+        "maxDescriptionLength": 750,
         "allowedFileTypes": "image/*,.pdf,.docx,.xlsx,.txt",
         "useCategories": true
     }

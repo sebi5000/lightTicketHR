@@ -9,3 +9,11 @@ export enum StatusType{
     warning = "warning",
     error = "error"
 }
+
+export enum HTTPStatusCode{
+    ok = 200,
+    bad_request = 400,
+    unauthorized = 401,
+    forbidden = 403,
+    server_error = 500
+}

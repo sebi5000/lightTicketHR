@@ -6,3 +6,8 @@ export interface IStatus{
     longMessage: string,
     type: StatusType
 }
+
+export interface IHTTPStatus{
+    status_code: number,
+    detail: string
+}

@@ -1,6 +1,6 @@
 import { StatusType } from "$lib/common/enumerations";
-import type { IStatus } from "$lib/common/interfaces/IStatus";
-import type { IAnswer } from "../interfaces/IAnswer";
+import type { IStatus, IHTTPStatus } from "$lib/common/interfaces/IStatus";
+import type { IAnswer, IAnswerResponse } from "../interfaces/IAnswer";
 import type { ILightHRService } from "../interfaces/ILightHRService";
 import type { ITicket, ITicketCategory } from "../interfaces/ITicket";
 import type { IConfiguration } from "../interfaces/IConfiguration";
@@ -13,13 +13,19 @@ export class LightHRService implements ILightHRService{
          this.config = config;
     }
 
-    async getSuggestionsAsync(phrase: string): Promise<IAnswer[]> {      
-        
-        await new Promise( resolve => setTimeout(resolve, 2000) );
+    async getSuggestionsAsync(phrase: string): Promise<IAnswerResponse> {
+        const response = await fetch(`https://lighttickethrapi.azurewebsites.net/answers/${phrase}`, {method: 'GET', headers: { "Accept": "application/json" }});
+        const body = await response.json();
 
-        let data = [{topic: "Beispiel-1", description: "Eine Beschreibung", ranking: 1},
-        {topic: "Beispiel-2", description: "Eine Beschreibung-2", ranking: 3},
-        {topic: "Beispiel-3", description: "Eine Beschreibung-3", ranking: 2}];
+        let data = body as IAnswer[];
+        let status = {status_code: 200, detail: "Ok"} as IHTTPStatus;
+        if(data === null){
+            status = body as IHTTPStatus;
+        }
+        
+        //let data = [{topic: "Beispiel-1", description: "Eine Beschreibung", ranking: 1},
+        //{topic: "Beispiel-2", description: "<b>Eine Beschreibung-2</b>", ranking: 3},
+        //{topic: "Beispiel-3", description: "Eine Beschreibung-3", ranking: 2}];                    
 
         let extHook = this.config?.hooks?.find( conf => conf.name === "hookAfterSuggestions");
         try{
@@ -39,7 +45,7 @@ export class LightHRService implements ILightHRService{
         }
 
         data.sort((x,y) => x.ranking - y.ranking);
-        return data;
+        return { answers: data, status: status } as IAnswerResponse;
     }
     
     async getTicketCategoriesAsync(): Promise<ITicketCategory[]>{

@@ -6,15 +6,15 @@
 {#if answer != null}
     <div class="container-fluid">
         <div class="row">
-            <div class="col-md-1">
+            <div class="col-md-2">
                 <h4>{answer.topic}</h4>
             </div>
-                <div class="btn-group" role="group">
-                    <button type="button" class="btn btn-success">Helped me</button>
-                </div>
+            <div class="col-md-1">
+                <button type="button" class="btn btn-success">Helped me</button>
+            </div>
         </div>
         <div class="well">
-            {answer.description}
+            {@html answer.description}
         </div>
     </div>
 {/if}
