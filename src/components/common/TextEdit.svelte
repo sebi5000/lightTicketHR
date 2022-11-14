@@ -21,9 +21,9 @@ function onInputChanged(eventArgs: any){
     <label for={id} class="form-label">{label}</label>
 {/if}
 {#if multiRow}
-    <textarea id={id} class="form-control" placeholder={placeHolder} rows="3" bind:value={value} maxlength={maxLength} minLength={minLength} on:input={onInputChanged} />
+    <textarea id={id} class="form-control" placeholder={placeHolder} rows="3" bind:value={value} maxlength={maxLength} minLength={minLength} on:input={onInputChanged} on:change/>
 {:else}
-    <input id={id} class="form-control" placeholder={placeHolder} bind:value={value} minlength={minLength} maxlength={maxLength} on:input={onInputChanged} />
+    <input id={id} class="form-control" placeholder={placeHolder} bind:value={value} minlength={minLength} maxlength={maxLength} on:input={onInputChanged} on:change/>
 {/if}
 
 {#if minLength <= 0}    

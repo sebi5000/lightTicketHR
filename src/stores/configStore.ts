@@ -6,7 +6,6 @@ const initialConfig = {
         { name: "hookAfterSuggestions", extEndpoint: "", disableOrigCall: false }
     ],
     questionOptions: {minLength: 10},
-    ticketCategories: [ { key: "0", name: "Select a value...", initialSelected: true } ],
     createTicketOptions:{
         minSubjectLength: 10,
         minDescriptionLength: 50,

@@ -1,7 +1,6 @@
 <script lang="ts">
 	import { LightHRServiceFactory } from '$lib/lightHR/classes/LightHRServiceFactory';
 	import QuickSuggestion from './QuickSuggestion.svelte';
-    import type {IAnswer} from '../lib/lightHR/interfaces/IAnswer';
 	import type { IConfiguration } from '$lib/lightHR/interfaces/IConfiguration';
 	import { HTTPStatusCode } from '$lib/common/enumerations';
 

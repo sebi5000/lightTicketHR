@@ -1,5 +1,8 @@
-import azure from 'svelte-adapter-azure-swa'
+import azure from 'svelte-adapter-azure-swa';
 import preprocess from 'svelte-preprocess';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {

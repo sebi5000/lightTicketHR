@@ -1,11 +1,9 @@
 <script lang="ts">    	
     import ShowQuickSuggestions from './ShowQuickSuggestions.svelte';
     import { Modus, StatusType } from '../lib/common/enumerations';
-	import CreateTicket from './CreateTicket.svelte';
     import {get} from 'svelte/store';
 	import { globalConfig } from '../stores/configStore';
     import type {IStatus} from '../lib/common/interfaces/IStatus';
-    import StatusStrip from './common/StatusStrip.svelte';
     
     let config = get(globalConfig);
     export let phrase = "";
@@ -28,14 +26,6 @@
     function onCreateTicket(eventArgs: any){
         modus = Modus.CreateTicket;        
     }
-
-    async function onTicketFormClicked(eventArgs: any){
-        switch(eventArgs.target.id){
-            case "ticket-cancel":
-                modus = Modus.Search;
-                break;
-        }
-    }
 </script>
     
 <div class="container">
@@ -43,22 +33,15 @@
         <div class="input-group input-group-lg m-5">     
             <input type="text" class="form-control" bind:value={phrase} on:change={onPhraseSubmit} placeholder={placeholder} disabled={modus === Modus.CreateTicket} />
             <span class="input-group-btn">
-                <button class="btn btn-default" type="button" on:click={onPhraseSubmit} disabled={modus === Modus.CreateTicket}>Search</button>
-                <button class="btn btn-default" type="button" on:click={onCreateTicket} disabled={modus === Modus.CreateTicket}>Ask HR</button>
+                <button class="btn btn-default" type="button" on:click={onPhraseSubmit} disabled={modus === Modus.CreateTicket}>Search</button>                
+                <a class="btn btn-default" role="button" href="/createTicket">AskHR</a>
             </span>
         </div>
     </div>
     <div class="row">
-        {#if modus === Modus.Search}
-            <ShowQuickSuggestions config={config} phrase={changedPhrase} />
-        {:else}
-            <CreateTicket bind:status={ticketStatus} config={config} phrase={phrase} on:click={onTicketFormClicked}/>
-        {/if}
+        <ShowQuickSuggestions config={config} phrase={changedPhrase} />
     </div>
 </div>
-{#if ticketStatus?.type === StatusType.success}
-    <StatusStrip status={ ticketStatus } durationMs={4000}/>
-{/if}
 
 <style>
     .input-group{

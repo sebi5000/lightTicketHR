@@ -9,5 +9,6 @@ export interface IStatus{
 
 export interface IHTTPStatus{
     status_code: number,
-    detail: string
+    detail: string,
+    isOk: boolean
 }

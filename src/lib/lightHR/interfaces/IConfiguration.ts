@@ -1,7 +1,6 @@
 export interface IConfiguration{
     hooks: Array<IHook>,
     questionOptions: IQuestionOptions,
-    ticketCategories: Array<ITicketCategory> | null,
     createTicketOptions: ITicketOptions
 }
 

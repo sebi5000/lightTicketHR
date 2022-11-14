@@ -15028,6 +15028,95 @@ function create_ssr_component(fn) {
   };
 }
 
+// .svelte-kit/output/server/chunks/index2.js
+var HttpError = class {
+  constructor(status, body) {
+    this.status = status;
+    if (typeof body === "string") {
+      this.body = { message: body };
+    } else if (body) {
+      this.body = body;
+    } else {
+      this.body = { message: `Error: ${status}` };
+    }
+  }
+  toString() {
+    return JSON.stringify(this.body);
+  }
+};
+var Redirect = class {
+  constructor(status, location) {
+    this.status = status;
+    this.location = location;
+  }
+};
+var ValidationError = class {
+  constructor(status, data) {
+    this.status = status;
+    this.data = data;
+  }
+};
+function error(status, message) {
+  return new HttpError(status, message);
+}
+function json(data, init2) {
+  const headers = new Headers(init2 == null ? void 0 : init2.headers);
+  if (!headers.has("content-type")) {
+    headers.set("content-type", "application/json");
+  }
+  return new Response(JSON.stringify(data), {
+    ...init2,
+    headers
+  });
+}
+var subscriber_queue = [];
+function readable(value, start) {
+  return {
+    subscribe: writable(value, start).subscribe
+  };
+}
+function writable(value, start = noop) {
+  let stop;
+  const subscribers = /* @__PURE__ */ new Set();
+  function set(new_value) {
+    if (safe_not_equal(value, new_value)) {
+      value = new_value;
+      if (stop) {
+        const run_queue = !subscriber_queue.length;
+        for (const subscriber of subscribers) {
+          subscriber[1]();
+          subscriber_queue.push(subscriber, value);
+        }
+        if (run_queue) {
+          for (let i = 0; i < subscriber_queue.length; i += 2) {
+            subscriber_queue[i][0](subscriber_queue[i + 1]);
+          }
+          subscriber_queue.length = 0;
+        }
+      }
+    }
+  }
+  function update(fn) {
+    set(fn(value));
+  }
+  function subscribe(run2, invalidate = noop) {
+    const subscriber = [run2, invalidate];
+    subscribers.add(subscriber);
+    if (subscribers.size === 1) {
+      stop = start(set) || noop;
+    }
+    run2(value);
+    return () => {
+      subscribers.delete(subscriber);
+      if (subscribers.size === 0) {
+        stop();
+        stop = null;
+      }
+    };
+  }
+  return { set, update, subscribe };
+}
+
 // node_modules/devalue/src/utils.js
 var escaped = {
   "<": "\\u003C",
@@ -15433,55 +15522,6 @@ function stringify_primitive2(thing) {
   return String(thing);
 }
 
-// .svelte-kit/output/server/chunks/index2.js
-var subscriber_queue = [];
-function readable(value, start) {
-  return {
-    subscribe: writable(value, start).subscribe
-  };
-}
-function writable(value, start = noop) {
-  let stop;
-  const subscribers = /* @__PURE__ */ new Set();
-  function set(new_value) {
-    if (safe_not_equal(value, new_value)) {
-      value = new_value;
-      if (stop) {
-        const run_queue = !subscriber_queue.length;
-        for (const subscriber of subscribers) {
-          subscriber[1]();
-          subscriber_queue.push(subscriber, value);
-        }
-        if (run_queue) {
-          for (let i = 0; i < subscriber_queue.length; i += 2) {
-            subscriber_queue[i][0](subscriber_queue[i + 1]);
-          }
-          subscriber_queue.length = 0;
-        }
-      }
-    }
-  }
-  function update(fn) {
-    set(fn(value));
-  }
-  function subscribe(run2, invalidate = noop) {
-    const subscriber = [run2, invalidate];
-    subscribers.add(subscriber);
-    if (subscribers.size === 1) {
-      stop = start(set) || noop;
-    }
-    run2(value);
-    return () => {
-      subscribers.delete(subscriber);
-      if (subscribers.size === 0) {
-        stop();
-        stop = null;
-      }
-    };
-  }
-  return { set, update, subscribe };
-}
-
 // .svelte-kit/output/server/index.js
 var import_cookie = __toESM(require_cookie(), 1);
 var set_cookie_parser = __toESM(require_set_cookie(), 1);
@@ -15524,46 +15564,6 @@ ${components[1] ? `${validate_component(components[0] || missing_component, "sve
 
 ${``}`;
 });
-var HttpError = class {
-  constructor(status, body) {
-    this.status = status;
-    if (typeof body === "string") {
-      this.body = { message: body };
-    } else if (body) {
-      this.body = body;
-    } else {
-      this.body = { message: `Error: ${status}` };
-    }
-  }
-  toString() {
-    return JSON.stringify(this.body);
-  }
-};
-var Redirect = class {
-  constructor(status, location) {
-    this.status = status;
-    this.location = location;
-  }
-};
-var ValidationError = class {
-  constructor(status, data) {
-    this.status = status;
-    this.data = data;
-  }
-};
-function error(status, message) {
-  return new HttpError(status, message);
-}
-function json(data, init2) {
-  const headers = new Headers(init2 == null ? void 0 : init2.headers);
-  if (!headers.has("content-type")) {
-    headers.set("content-type", "application/json");
-  }
-  return new Response(JSON.stringify(data), {
-    ...init2,
-    headers
-  });
-}
 function negotiate(accept, types) {
   const parts = [];
   accept.split(",").forEach((str, i) => {
@@ -17809,10 +17809,10 @@ var Server = class {
 var manifest = {
   appDir: "_app",
   appPath: "_app",
-  assets: /* @__PURE__ */ new Set(["askHR_logo.png", "favicon.png"]),
-  mimeTypes: { ".png": "image/png" },
+  assets: /* @__PURE__ */ new Set(["askHR_logo.png", "call_center.webp", "favicon.png"]),
+  mimeTypes: { ".png": "image/png", ".webp": "image/webp" },
   _: {
-    entry: { "file": "_app/immutable/start-d2539570.js", "imports": ["_app/immutable/start-d2539570.js", "_app/immutable/chunks/index-5aaaad33.js", "_app/immutable/chunks/singletons-9529d4e5.js", "_app/immutable/chunks/index-f635f17f.js"], "stylesheets": [] },
+    entry: { "file": "_app/immutable/start-679d6a4d.js", "imports": ["_app/immutable/start-679d6a4d.js", "_app/immutable/chunks/index-eba2764b.js", "_app/immutable/chunks/singletons-6ad62dfe.js", "_app/immutable/chunks/index-4feed094.js", "_app/immutable/chunks/control-03134885.js"], "stylesheets": [] },
     nodes: [],
     routes: [],
     matchers: async () => {

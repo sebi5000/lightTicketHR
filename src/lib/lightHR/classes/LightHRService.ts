@@ -2,8 +2,9 @@ import { StatusType } from "$lib/common/enumerations";
 import type { IStatus, IHTTPStatus } from "$lib/common/interfaces/IStatus";
 import type { IAnswer, IAnswerResponse } from "../interfaces/IAnswer";
 import type { ILightHRService } from "../interfaces/ILightHRService";
-import type { ITicket, ITicketCategory } from "../interfaces/ITicket";
+import type { ITicket, ITicketCategory, ITicketCategoryResponse } from "../interfaces/ITicket";
 import type { IConfiguration } from "../interfaces/IConfiguration";
+//import { PUBLIC_API_ENDPOINT } from '$env/static/public';
 
 export class LightHRService implements ILightHRService{
     
@@ -13,14 +14,27 @@ export class LightHRService implements ILightHRService{
          this.config = config;
     }
 
+    async getTicketCategoryAsync(ticket: ITicket): Promise<ITicketCategoryResponse> {
+        const defaultCategory = {id: 0, name:"Other", contact:{id:0, name:"1st Level Support", description:"Our 1st Level Support take care of your concern."}};
+        await new Promise(f => setTimeout(f, 2000));
+        return { category: defaultCategory, status: { status_code: 200, detail: "Ok", isOk: true } }
+    }
+
+    async estimateResponseTimeAsync(ticket: ITicketCategory): Promise<Number> {
+        await new Promise(f => setTimeout(f, 1500));
+        return 13;
+    }
+
     async getSuggestionsAsync(phrase: string): Promise<IAnswerResponse> {
-        const response = await fetch(`https://lighttickethrapi.azurewebsites.net/answers/${phrase}`, {method: 'GET', headers: { "Accept": "application/json" }});
+        
+        //Read API Endpoint based on Environment
+        const response = await fetch(`http://127.0.0.1:8000/answers/${phrase}`, {method: 'GET', headers: { "Accept": "application/json" }});
         const body = await response.json();
 
         let data = body as IAnswer[];
-        let status = {status_code: 200, detail: "Ok"} as IHTTPStatus;
+        let status = { status_code: 200, detail: "Ok" };
         if(data === null){
-            status = body as IHTTPStatus;
+            status = { status_code: response.status, detail: response.statusText }
         }
         
         //let data = [{topic: "Beispiel-1", description: "Eine Beschreibung", ranking: 1},
@@ -46,24 +60,6 @@ export class LightHRService implements ILightHRService{
 
         data.sort((x,y) => x.ranking - y.ranking);
         return { answers: data, status: status } as IAnswerResponse;
-    }
-    
-    async getTicketCategoriesAsync(): Promise<ITicketCategory[]>{
-
-        let data = [];
-
-        let extHook = this.config?.hooks?.find( conf => conf.name === "hookGetTicketCategories");
-
-        try{            
-            if(extHook?.extEndpoint){
-                data = await fetch(extHook.extEndpoint, {method: "GET", headers: {"Content-Type": "application/json; charset=UTF-8"}})
-                                .then((response) => response.json());
-            }
-        }catch(e){
-            data = [];
-        }
-
-        return data;
     }
 
     async createTicketAsync(ticket: ITicket): Promise<IStatus> {

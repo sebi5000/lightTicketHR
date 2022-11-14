@@ -1,6 +1,6 @@
 <script lang="ts">
     import { StatusType } from '$lib/common/enumerations';
-import type {IStatus} from '../../lib/common/interfaces/IStatus';
+    import type {IStatus} from '../../lib/common/interfaces/IStatus';
 
     export let status: IStatus;
     export let durationMs = 0;
