@@ -6,7 +6,7 @@
         "minLength": 3
     },
     "createTicketOptions":{
-        "minSubjectLength": 15,
+        "minSubjectLength": 5,
         "maxSubjectLength": 150,
         "minDescriptionLength": 100,
         "maxDescriptionLength": 750,

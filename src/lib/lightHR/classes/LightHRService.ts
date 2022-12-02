@@ -4,7 +4,6 @@ import type { IAnswer, IAnswerResponse } from "../interfaces/IAnswer";
 import type { ILightHRService } from "../interfaces/ILightHRService";
 import type { ITicket, ITicketCategory, ITicketCategoryResponse } from "../interfaces/ITicket";
 import type { IConfiguration } from "../interfaces/IConfiguration";
-//import { PUBLIC_API_ENDPOINT } from '$env/static/public';
 
 export class LightHRService implements ILightHRService{
     

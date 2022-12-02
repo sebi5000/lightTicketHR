@@ -22,10 +22,6 @@
     //$: modus;
     //If there is a valid status from ticket creation, we can start Search Modus again
     $: modus = ((ticketStatus?.type === StatusType.success) ? Modus.Search : modus);
-
-    function onCreateTicket(eventArgs: any){
-        modus = Modus.CreateTicket;        
-    }
 </script>
     
 <div class="container">
@@ -34,7 +30,7 @@
             <input type="text" class="form-control" bind:value={phrase} on:change={onPhraseSubmit} placeholder={placeholder} disabled={modus === Modus.CreateTicket} />
             <span class="input-group-btn">
                 <button class="btn btn-default" type="button" on:click={onPhraseSubmit} disabled={modus === Modus.CreateTicket}>Search</button>                
-                <a class="btn btn-default" role="button" href="/createTicket">AskHR</a>
+                <a class="btn btn-default" role="button" href="/createTicket?phrase={phrase}">AskHR</a>
             </span>
         </div>
     </div>
